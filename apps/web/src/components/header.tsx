@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
@@ -8,8 +9,10 @@ export default function Header() {
   const links = [
     { to: "/", label: "Home" },
     { to: "/dashboard", label: "Dashboard" },
+    { to: "/buy-homestay", label: "Buy Homestay" },
     { to: "/ai", label: "AI Chat" },
   ] as const;
+  const pathname = usePathname();
 
   return (
     <div>
@@ -17,7 +20,11 @@ export default function Header() {
         <nav className="flex gap-4 text-lg">
           {links.map(({ to, label }) => {
             return (
-              <Link key={to} href={to}>
+              <Link
+                key={to}
+                href={to}
+                className={pathname === to ? 'underline' : ''}
+              >
                 {label}
               </Link>
             );

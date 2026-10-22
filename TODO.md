@@ -1,0 +1,1 @@
+- [ ] buy-homestay page need SSR?

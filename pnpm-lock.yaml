@@ -272,6 +272,9 @@ importers:
       '@orpc/zod':
         specifier: 'catalog:'
         version: 1.15.7(@orpc/contract@1.15.7)(@orpc/server@1.15.7)(zod@4.6.7)
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 1.0.0-rc.4(@sinclair/typebox@0.34.52)(@types/pg@8.23.1)(bun-types@1.4.3)(pg@8.23.1)(zod@4.6.7)
       zod:
         specifier: 'catalog:'
         version: 4.6.7
