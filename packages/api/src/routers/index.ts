@@ -14,16 +14,10 @@ const listingSchema = z.object({
   type: z.enum(LISTING_TYPE_VALUES),
   whatsapp: z
     .string()
-    .transform((val) => {
-      const normalized = normalizeMyWhatsapp(val);
-      if (normalized === null) {
-        throw new Error("Invalid WhatsApp number format");
-      }
-      return normalized;
-    })
-    .refine((val) => val !== null, {
+    .refine((val) => normalizeMyWhatsapp(val) !== null, {
       message: "Invalid WhatsApp number format",
-    }),
+    })
+    .transform((val) => normalizeMyWhatsapp(val)!),
 });
 
 export const appRouter = {
