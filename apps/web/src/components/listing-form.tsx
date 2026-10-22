@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@myrehat-task-b/ui/components/button";
 import { Input } from "@myrehat-task-b/ui/components/input";
 import { Label } from "@myrehat-task-b/ui/components/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@myrehat-task-b/ui/components/select";
 import { toast } from "sonner";
 
 import { LISTING_TYPES, LISTING_TYPE_VALUES } from "@/lib/constants";
@@ -14,6 +15,7 @@ export default function ListingForm() {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [type, setType] = useState<string>("");
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,13 +27,14 @@ export default function ListingForm() {
       title: formData.get("title") as string,
       price: Number(formData.get("price")),
       location: formData.get("location") as string,
-      type: formData.get("type") as typeof LISTING_TYPE_VALUES[number],
+      type: type as typeof LISTING_TYPE_VALUES[number],
       whatsapp: formData.get("whatsapp") as string,
     };
 
     try {
       await orpcClient.listings.create(data);
       toast.success("Listing created successfully!");
+      setType("");
       router.push("/buy-homestay");
     } catch (error: any) {
       console.error("Error creating listing:", error);
@@ -74,21 +77,21 @@ export default function ListingForm() {
 
       <div>
         <Label htmlFor="type">Type</Label>
-        <select
-          id="type"
-          name="type"
-          required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
-        >
-          <option value="" disabled>
-            Select a type
-          </option>
-          {LISTING_TYPES.map((type) => (
-            <option key={type.value} value={type.value}>
-              {type.label}
-            </option>
-          ))}
-        </select>
+        <Select value={type} onValueChange={(value) => setType(value ?? "")} required>
+          <SelectTrigger id="type">
+            <SelectValue placeholder="Select a type">
+              {type ? LISTING_TYPES.find((t) => t.value === type)?.label : ""}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {LISTING_TYPES.map((type) => (
+              <SelectItem key={type.value} value={type.value}>
+                {type.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <input type="hidden" name="type" value={type} />
         {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
       </div>
 

@@ -26,13 +26,15 @@ function SelectTrigger({ className, children, ...props }: SelectPrimitive.Trigge
   );
 }
 
-function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+function SelectValue({ className, children, ...props }: SelectPrimitive.Value.Props & { children?: React.ReactNode }) {
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
       className={cn("min-w-0 truncate", className)}
       {...props}
-    />
+    >
+      {children}
+    </SelectPrimitive.Value>
   );
 }
 
