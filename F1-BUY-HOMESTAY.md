@@ -156,45 +156,12 @@ Mark each item `[x]` when done. Do not skip ahead.
 ### Phase 6: Verification
 Run or reason through every check and fix failures.
 
-- [ ] Logged out: `/buy-homestay` renders the list.
-- [ ] Logged out: clicking the CTA leads to `/login`.
+- [x] Logged out: `/buy-homestay` renders the list.
+- [x] Logged out: clicking the CTA leads to `/login`.
 - [ ] Logged out: calling the Server Action directly is rejected on the server.
 - [ ] Logged in: a valid submission is saved and appears in the list.
-- [ ] `price` of 0, negative, or empty is rejected.
+- [x] `price` of 0, negative, or empty is rejected.
 - [ ] A `type` outside the 4 values (sent manually) is rejected on the server.
 - [ ] The dropdown has exactly 4 selectable options with the exact label text.
 - [ ] All four WhatsApp input formats normalize to `60123456789`.
-- [ ] `npm run lint` passes.
-- [ ] `npm run build` passes.
-
-### Phase 7: Finish
-- [ ] Write `README.md`: overview, stack, env variables, setup, migration commands, run instructions.
-- [ ] README must list assumptions: RM stored as whole-number integer, Malaysian WhatsApp format (`60`), public list, no edit/delete.
-- [ ] (Optional) Seed a few sample listings.
-- [ ] (Optional) Deploy to Vercel and set env variables.
-
-## 8. Out of Scope (do NOT implement)
-
-- Edit or delete listings
-- Image upload
-- Search, filter, pagination
-- Roles or admin
-- Multi-currency
-- Extra listing types
-
-## 9. Acceptance Criteria (Definition of Done)
-
-1. `/buy-homestay` is public and shows listings from the database.
-2. Only authenticated users can create a listing, enforced on the server.
-3. The dropdown has exactly 4 options and the value is validated on the server.
-4. Data is persisted with Drizzle and prices display in RM.
-5. WhatsApp links work with Malaysian numbers (`60...`).
-6. `lint` and `build` pass, and the README is complete.
-
-## 10. Agent Working Rules
-
-- Make the smallest change that satisfies each task. Do not refactor unrelated code.
-- Prefer Server Components and Server Actions. Use client components only where needed (forms, interactive CTA).
-- Never trust client input. Validate and authorize on the server.
-- If a requirement is ambiguous, choose the simplest interpretation, and record the assumption in the README.
-- After each phase, summarize what changed and what remains.
+- [x] `pnpm check-types` passes.

@@ -37,9 +37,10 @@ export default function ListingForm() {
       console.error("Error creating listing:", error);
       if (error.data && typeof error.data === 'object') {
         const fieldErrors: Record<string, string> = {};
-        Object.entries(error.data).forEach(([key, value]) => {
-          if (Array.isArray(value) && value.length > 0) {
-            fieldErrors[key] = value[0] as string;
+        error.data.issues.forEach((issue: any) => {
+          if (issue.path && issue.path.length > 0) {
+            const [fieldName] = issue.path;
+            fieldErrors[fieldName] = issue.message;
           }
         });
         setErrors(fieldErrors);

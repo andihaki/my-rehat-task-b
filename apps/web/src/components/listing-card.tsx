@@ -22,10 +22,10 @@ export default function ListingCard({ listing }: ListingCardProps) {
   const typeLabel = LISTING_TYPES.find((t) => t.value === listing.type)?.label || listing.type;
 
   return (
-    <div className="border rounded-lg p-4 space-y-3">
+    <li className="border rounded-lg p-4 space-y-3">
       <div className="flex justify-between items-start">
         <h3 className="text-lg font-semibold">{listing.title}</h3>
-        <span className="px-2 py-1 bg-gray-100 text-sm rounded-full">
+        <span className="px-2 py-1 bg-secondary text-xs rounded-full">
           {typeLabel}
         </span>
       </div>
@@ -41,6 +41,6 @@ export default function ListingCard({ listing }: ListingCardProps) {
           Contact via WhatsApp
         </Button>
       </a>
-    </div>
+    </li>
   );
 }
