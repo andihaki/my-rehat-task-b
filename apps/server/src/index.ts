@@ -19,6 +19,7 @@ import { Elysia } from "elysia";
 
 import { createContext } from "./context";
 import { ENV } from "./env.server";
+import { wahaWebhook } from "./routes/waha";
 import { auth } from "./services";
 
 const rpcHandler = new RPCHandler(appRouter, {
@@ -99,6 +100,7 @@ new Elysia()
       stream: toUIMessageStream({ stream: result.stream }),
     });
   })
+  .use(wahaWebhook)
   .get("/", () => "OK")
   .listen(3000, () => {
     console.log("Server is running on http://localhost:3000");
