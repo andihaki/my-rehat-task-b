@@ -43,11 +43,11 @@ payload/response contract, verified with `curl` or an HTTP client.
 | HTTP server    | Existing Elysia server at `apps/server` (port `3000`)           |
 | Validation     | `zod` (already installed)                                       |
 | AI SDK         | `ai` → `generateText`                                           |
-| Model provider | `@ai-sdk/google` → `google("gemini-3.1-flash-lite")` |
-| API key        | Existing `GOOGLE_GENERATIVE_AI_API_KEY` from `apps/server/.env` |
-| Runtime        | Bun (existing `pnpm dev:server`)                                |
+| Model provider | `@openrouter/ai-sdk-provider` → `ENV.OPENROUTER_MODEL` |
+| API key        | `OPENROUTER_API_KEY` from `apps/server/.env`                   |
+| Runtime        | Bun (existing `pnpm dev:server`)                               |
 
-No new packages are needed.
+One new package is required: `@openrouter/ai-sdk-provider`.
 
 ## 4. Hard Constraints (must not be violated)
 
@@ -178,10 +178,17 @@ No changes to `apps/web`, `packages/db`, or `packages/api`.
 ### `apps/server/src/routes/waha.ts` (shape)
 
 ```ts
-import { google } from "@ai-sdk/google";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateText } from "ai";
 import { Elysia } from "elysia";
 import { z } from "zod";
+
+import { ENV } from "../env.server";
+
+globalThis.AI_SDK_DEFAULT_PROVIDER = createOpenRouter({
+  apiKey: ENV.OPENROUTER_API_KEY,
+  compatibility: "strict",
+});
 
 const wahaWebhookSchema = z.object({
   event: z.string().trim().min(1),
@@ -232,7 +239,7 @@ export const wahaWebhook = new Elysia().post(
 
     try {
       const { text } = await generateText({
-        model: google("gemini-3.1-flash-lite"),
+        model: ENV.OPENROUTER_MODEL,
         system: CONCIERGE_SYSTEM_PROMPT,
         prompt: payload.body,
         temperature: 0.3,
@@ -303,14 +310,17 @@ Mark each item `[x]` when done. Do not skip ahead.
 ### Phase 0: Inspect existing server
 
 - [x] Confirm the server is Elysia in `apps/server/src/index.ts` and listens on port `3000`.
-- [x] Confirm `ai`, `@ai-sdk/google`, and `zod` are already dependencies.
-- [x] Confirm `GOOGLE_GENERATIVE_AI_API_KEY` exists in `apps/server/.env.schema` and is loaded by
-      `apps/server/src/env.server.ts`.
+- [x] Confirm `ai`, `@openrouter/ai-sdk-provider`, and `zod` are available dependencies.
+- [x] Confirm `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` exist in `apps/server/.env.schema` and
+      are loaded by `apps/server/src/env.server.ts`.
 - [x] Confirm the webhook should be added to `apps/server`, not `apps/web`.
 
 ### Phase 1: Webhook module
 
 - [x] Create `apps/server/src/routes/waha.ts`.
+- [x] Add `@openrouter/ai-sdk-provider` to `apps/server/package.json`.
+- [x] Set `globalThis.AI_SDK_DEFAULT_PROVIDER` to an OpenRouter provider using
+      `ENV.OPENROUTER_API_KEY`.
 - [x] Add `wahaWebhookSchema` with the validation rules from section 6.
 - [x] Add `CONCIERGE_SYSTEM_PROMPT` for MyRehat homestay enquiries.
 - [x] Implement the POST handler:
