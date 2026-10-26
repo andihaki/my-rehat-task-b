@@ -38,4 +38,9 @@ Awalnya sempat asume kalo polish bakal bisa di panggil dari `/server/` dan pakai
 
 [Prompt session log](./pi-session-2026-10-26T03-23-46-535Z_01a1763c-4fe7-718c-b587-419422b4f21b.html)
 
-\*untuk update UI masih on progress dan akan langsung open PR dan submit setelah selesai dikerjakan.
+# UI Enhancement
+
+- [x] beautify header
+- [x] pakai existing Card component di halaman listing
+
+[Prompt session log](./pi-session-2026-10-26T09-21-57-303Z_01a17784-3c37-73ef-bcdc-b14a59637071.html)

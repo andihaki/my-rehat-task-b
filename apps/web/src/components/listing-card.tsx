@@ -1,7 +1,15 @@
 import { Button } from "@myrehat-task-b/ui/components/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@myrehat-task-b/ui/components/card";
 
-import { formatRM } from "@/lib/format";
 import { LISTING_TYPES } from "@/lib/constants";
+import { formatRM } from "@/lib/format";
 
 export type Listing = {
   id: string;
@@ -19,28 +27,41 @@ interface ListingCardProps {
 }
 
 export default function ListingCard({ listing }: ListingCardProps) {
-  const typeLabel = LISTING_TYPES.find((t) => t.value === listing.type)?.label || listing.type;
+  const typeLabel =
+    LISTING_TYPES.find((t) => t.value === listing.type)?.label || listing.type;
 
   return (
-    <li className="border rounded-lg p-4 space-y-3">
-      <div className="flex justify-between items-start">
-        <h3 className="text-lg font-semibold">{listing.title}</h3>
-        <span className="px-2 py-1 bg-secondary text-xs rounded-full">
-          {typeLabel}
-        </span>
-      </div>
-      <p className="text-xl font-bold text-green-600">{formatRM(listing.price)}</p>
-      <p className="text-gray-600">{listing.location}</p>
-      <a
-        href={`https://wa.me/${listing.whatsapp}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
-        <Button variant="outline" className="w-full">
-          Contact via WhatsApp
-        </Button>
-      </a>
+    <li className="h-full">
+      <Card className="h-full rounded-md">
+        <CardHeader>
+          <CardTitle className="font-semibold text-base">
+            {listing.title}
+          </CardTitle>
+          <CardAction>
+            <span className="bg-secondary px-2 py-1 text-xs">{typeLabel}</span>
+          </CardAction>
+        </CardHeader>
+
+        <CardContent className="flex-1 space-y-1">
+          <p className="font-bold text-green-600 text-xl">
+            {formatRM(listing.price)}
+          </p>
+          <p className="text-muted-foreground">{listing.location}</p>
+        </CardContent>
+
+        <CardFooter>
+          <a
+            href={`https://wa.me/${listing.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full"
+          >
+            <Button variant="outline" className="w-full">
+              Contact via WhatsApp
+            </Button>
+          </a>
+        </CardFooter>
+      </Card>
     </li>
   );
 }

@@ -13,7 +13,7 @@ export default function BuyHomestayPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Buy Homestay Listings</h1>
+        <h1 className="text-xl md:text-3xl font-bold">Buy Homestay Listings</h1>
         <PostListingCTA />
       </div>
 
