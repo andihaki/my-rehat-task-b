@@ -37,6 +37,12 @@ export const appRouter = {
       });
       return listings;
     }),
+    getLatest: publicProcedure.handler(async ({ context }) => {
+      return context.db.query.listing.findMany({
+        orderBy: (listing, { desc }) => [desc(listing.createdAt)],
+        limit: 3,
+      });
+    }),
     create: protectedProcedure
       .input(listingSchema)
       .handler(async ({ context, input }) => {
