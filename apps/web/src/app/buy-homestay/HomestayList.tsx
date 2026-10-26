@@ -4,15 +4,25 @@ import { Skeleton } from "@myrehat-task-b/ui/components/skeleton";
 import { type Listing } from "@/components/listing-card";
 import ListingCard from "@/components/listing-card";
 
-export default function HomestayList({ isLoading, listings }: { isLoading: boolean; listings: Listing[] }) {
+export default function HomestayList({
+  isLoading,
+  listings,
+  emptyMessage = "No listings yet. Be the first to post!",
+}: {
+  isLoading: boolean;
+  listings: Listing[];
+  emptyMessage?: string;
+}) {
   if (isLoading) {
-    return <Skeleton className="text-center text-lg py-12">Loading...</Skeleton>;
+    return (
+      <Skeleton className="text-center text-lg py-12">Loading...</Skeleton>
+    );
   }
 
   if (listings.length === 0) {
     return (
       <EmptyDescription className="text-center text-lg py-12">
-        No listings yet. Be the first to post!
+        {emptyMessage}
       </EmptyDescription>
     );
   }

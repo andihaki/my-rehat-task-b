@@ -37,6 +37,12 @@ export const appRouter = {
       });
       return listings;
     }),
+    getMine: protectedProcedure.handler(async ({ context }) => {
+      return context.db.query.listing.findMany({
+        where: { userId: context.session.user.id },
+        orderBy: (listing, { desc }) => [desc(listing.createdAt)],
+      });
+    }),
     getLatest: publicProcedure.handler(async ({ context }) => {
       return context.db.query.listing.findMany({
         orderBy: (listing, { desc }) => [desc(listing.createdAt)],
