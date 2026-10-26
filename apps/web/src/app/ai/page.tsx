@@ -29,15 +29,28 @@ import {
   MessageScrollerProvider,
   MessageScrollerViewport,
 } from "@myrehat-task-b/ui/components/message-scroller";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@myrehat-task-b/ui/components/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@myrehat-task-b/ui/components/tooltip";
 import { DefaultChatTransport } from "ai";
-import { ArrowUpIcon, Loader2, MessageCircleDashedIcon, RotateCwIcon } from "lucide-react";
-import { useState, type FormEvent, type KeyboardEvent } from "react";
+import {
+  ArrowUpIcon,
+  Loader2,
+  MessageCircleDashedIcon,
+  RotateCwIcon,
+} from "lucide-react";
+import { useState } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 import { Streamdown } from "streamdown";
 
+import { authClient } from "@/lib/auth-client";
 import { ENV } from "../../env";
 
 export default function AIPage() {
+  const { data: session } = authClient.useSession();
+  const greetingName = session?.user.name || "myrehat-task-b";
   const [input, setInput] = useState("");
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: new DefaultChatTransport({
@@ -46,7 +59,7 @@ export default function AIPage() {
   });
   const isSending = status === "submitted" || status === "streaming";
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const text = input.trim();
     if (!text || isSending) return;
@@ -73,7 +86,9 @@ export default function AIPage() {
           <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3">
             <div className="min-w-0">
               <h1 className="text-sm font-medium">New Chat</h1>
-              <p className="text-xs/relaxed text-muted-foreground">How can I help you today?</p>
+              <p className="text-xs/relaxed text-muted-foreground">
+                How can I help you today?
+              </p>
             </div>
             <div className="shrink-0">
               <Tooltip>
@@ -103,8 +118,10 @@ export default function AIPage() {
                 <EmptyMedia variant="icon">
                   <MessageCircleDashedIcon />
                 </EmptyMedia>
-                <EmptyTitle>Morning, myrehat-task-b!</EmptyTitle>
-                <EmptyDescription>What are we working on today?</EmptyDescription>
+                <EmptyTitle>Morning, {greetingName}!</EmptyTitle>
+                <EmptyDescription>
+                  What are we working on today?
+                </EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : (
@@ -118,10 +135,15 @@ export default function AIPage() {
                     const isUser = message.role === "user";
 
                     return (
-                      <MessageScrollerItem key={message.id} scrollAnchor={isUser}>
+                      <MessageScrollerItem
+                        key={message.id}
+                        scrollAnchor={isUser}
+                      >
                         <Message align={isUser ? "end" : "start"}>
                           <MessageBody>
-                            <MessageHeader>{isUser ? "You" : "AI Assistant"}</MessageHeader>
+                            <MessageHeader>
+                              {isUser ? "You" : "AI Assistant"}
+                            </MessageHeader>
                             <Bubble
                               align={isUser ? "end" : "start"}
                               variant={isUser ? "default" : "secondary"}
@@ -133,7 +155,8 @@ export default function AIPage() {
                                       <Streamdown
                                         key={index}
                                         isAnimating={
-                                          status === "streaming" && message.role === "assistant"
+                                          status === "streaming" &&
+                                          message.role === "assistant"
                                         }
                                       >
                                         {part.text}
@@ -194,7 +217,11 @@ export default function AIPage() {
                     disabled={isSending || !input.trim()}
                     className="ml-auto"
                   >
-                    {isSending ? <Loader2 className="animate-spin" /> : <ArrowUpIcon />}
+                    {isSending ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <ArrowUpIcon />
+                    )}
                     <span className="sr-only">Send</span>
                   </InputGroupButton>
                 </InputGroupAddon>
