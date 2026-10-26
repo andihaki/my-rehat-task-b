@@ -1,5 +1,5 @@
-import { describe, expect, it, mock } from "bun:test";
 import type { LanguageModel } from "ai";
+import { describe, expect, it, vi } from "vitest";
 
 import {
 	createProvider,
@@ -13,7 +13,7 @@ const model = {} as unknown as LanguageModel;
 describe("polish listing description", () => {
 	it("returns the polished description from a mocked generateText", async () => {
 		let received: { system: string; prompt: string } | undefined;
-		const generate = mock<GenerateTextLike>(async (input) => {
+		const generate = vi.fn<GenerateTextLike>(async (input) => {
 			received = input;
 			return { text: "  Polished description  " };
 		});
