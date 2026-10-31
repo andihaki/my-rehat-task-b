@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@myrehat-task-b/ui/components/button";
-import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 export default function PostListingCTA() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export default function PostListingCTA() {
 
   if (session?.user) {
     return (
-      <Button onClick={() => router.push("/buy-homestay/create")}>
+      <Button onClick={() => router.push("/listings/create")}>
         Post Listing
       </Button>
     );
@@ -19,7 +19,7 @@ export default function PostListingCTA() {
   return (
     <Button
       variant="outline"
-      onClick={() => router.push("/login?redirect=/buy-homestay")}
+      onClick={() => router.push("/login?redirect=/listings")}
     >
       Post Listing
     </Button>

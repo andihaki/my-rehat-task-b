@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import HomestayList from "@/app/buy-homestay/HomestayList";
+import HomestayList from "@/app/listings/HomestayList";
 import { orpc } from "@/utils/orpc";
 
 export default function Dashboard() {

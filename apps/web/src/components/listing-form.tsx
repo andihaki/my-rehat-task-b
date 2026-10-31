@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@myrehat-task-b/ui/components/button";
 import { Input } from "@myrehat-task-b/ui/components/input";
 import { Label } from "@myrehat-task-b/ui/components/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@myrehat-task-b/ui/components/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@myrehat-task-b/ui/components/select";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
-import { LISTING_TYPES, LISTING_TYPE_VALUES } from "@/lib/constants";
+import { type LISTING_TYPE_VALUES, LISTING_TYPES } from "@/lib/constants";
 import { orpcClient } from "@/lib/orpc-client";
 
 export default function ListingForm() {
@@ -27,7 +33,7 @@ export default function ListingForm() {
       title: formData.get("title") as string,
       price: Number(formData.get("price")),
       location: formData.get("location") as string,
-      type: type as typeof LISTING_TYPE_VALUES[number],
+      type: type as (typeof LISTING_TYPE_VALUES)[number],
       whatsapp: formData.get("whatsapp") as string,
     };
 
@@ -35,10 +41,10 @@ export default function ListingForm() {
       await orpcClient.listings.create(data);
       toast.success("Listing created successfully!");
       setType("");
-      router.push("/buy-homestay");
+      router.push("/listings");
     } catch (error: any) {
       console.error("Error creating listing:", error);
-      if (error.data && typeof error.data === 'object') {
+      if (error.data && typeof error.data === "object") {
         const fieldErrors: Record<string, string> = {};
         error.data.issues.forEach((issue: any) => {
           if (issue.path && issue.path.length > 0) {
@@ -60,24 +66,34 @@ export default function ListingForm() {
       <div>
         <Label htmlFor="title">Title</Label>
         <Input id="title" name="title" required />
-        {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+        {errors.title && (
+          <p className="mt-1 text-red-500 text-sm">{errors.title}</p>
+        )}
       </div>
 
       <div>
         <Label htmlFor="price">Price (RM)</Label>
         <Input id="price" name="price" type="number" required />
-        {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
+        {errors.price && (
+          <p className="mt-1 text-red-500 text-sm">{errors.price}</p>
+        )}
       </div>
 
       <div>
         <Label htmlFor="location">Location</Label>
         <Input id="location" name="location" required />
-        {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
+        {errors.location && (
+          <p className="mt-1 text-red-500 text-sm">{errors.location}</p>
+        )}
       </div>
 
       <div>
         <Label htmlFor="type">Type</Label>
-        <Select value={type} onValueChange={(value) => setType(value ?? "")} required>
+        <Select
+          value={type}
+          onValueChange={(value) => setType(value ?? "")}
+          required
+        >
           <SelectTrigger id="type">
             <SelectValue placeholder="Select a type">
               {type ? LISTING_TYPES.find((t) => t.value === type)?.label : ""}
@@ -92,7 +108,9 @@ export default function ListingForm() {
           </SelectContent>
         </Select>
         <input type="hidden" name="type" value={type} />
-        {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
+        {errors.type && (
+          <p className="mt-1 text-red-500 text-sm">{errors.type}</p>
+        )}
       </div>
 
       <div>
@@ -103,7 +121,9 @@ export default function ListingForm() {
           placeholder="012-345 6789"
           required
         />
-        {errors.whatsapp && <p className="text-red-500 text-sm mt-1">{errors.whatsapp}</p>}
+        {errors.whatsapp && (
+          <p className="mt-1 text-red-500 text-sm">{errors.whatsapp}</p>
+        )}
       </div>
 
       <Button type="submit" disabled={isPending} className="w-full">

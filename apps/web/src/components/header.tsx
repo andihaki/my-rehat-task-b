@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@myrehat-task-b/ui/components/button";
+import { cn } from "@myrehat-task-b/ui/lib/utils";
 import {
   Building2,
   Home,
@@ -11,16 +13,13 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-import { Button } from "@myrehat-task-b/ui/components/button";
-import { cn } from "@myrehat-task-b/ui/lib/utils";
 import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
 const LINKS = [
   { href: "/", label: "Home", icon: Home },
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/buy-homestay", label: "Buy Homestay", icon: Building2 },
+  { href: "/listings", label: "Buy Homestay", icon: Building2 },
   { href: "/ai", label: "AI Chat", icon: MessageCircle },
 ] as const;
 
