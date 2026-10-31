@@ -24,19 +24,33 @@ export function createQueryClient() {
 
 export const queryClient = createQueryClient();
 
-function getServerUrl(url: string) {
-  const processEnv = typeof process === "undefined" ? undefined : process.env;
-  if (typeof window === "undefined" && processEnv?.SERVER_URL) {
-    return processEnv.SERVER_URL.endsWith("/")
-      ? processEnv.SERVER_URL.slice(0, -1)
-      : processEnv.SERVER_URL;
+function getServerUrl() {
+  const url =
+    process.env.SERVER_URL?.trim() ||
+    process.env.NEXT_PUBLIC_SERVER_URL?.trim();
+
+  if (!url) {
+    return null;
   }
 
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
+function getRpcUrl() {
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}/api/rpc`;
+  }
+
+  const serverUrl = getServerUrl();
+  if (!serverUrl) {
+    throw new Error("SERVER_URL or NEXT_PUBLIC_SERVER_URL must be configured");
+  }
+
+  return `${serverUrl}/rpc`;
+}
+
 export const link = new RPCLink({
-  url: `${getServerUrl(process.env.NEXT_PUBLIC_SERVER_URL!)}/rpc`,
+  url: getRpcUrl,
   fetch(url, options) {
     return fetch(url, {
       ...options,
