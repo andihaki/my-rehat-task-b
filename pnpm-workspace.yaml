@@ -4,6 +4,7 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+  msgpackr-extract: true
 overrides:
   "@next/env": npm:@varlock/nextjs-integration@1.2.2
 catalog:

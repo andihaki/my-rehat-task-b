@@ -38,14 +38,10 @@ function getServerUrl() {
 
 function getRpcUrl() {
   if (typeof window !== "undefined") {
-    return `${window.location.origin}/api/rpc`;
+    return `${window.location.origin}/rpc`;
   }
 
-  const serverUrl = getServerUrl();
-  if (!serverUrl) {
-    throw new Error("SERVER_URL or NEXT_PUBLIC_SERVER_URL must be configured");
-  }
-
+  const serverUrl = getServerUrl() ?? "http://localhost:3000";
   return `${serverUrl}/rpc`;
 }
 

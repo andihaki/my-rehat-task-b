@@ -46,7 +46,6 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 import { Streamdown } from "streamdown";
 
 import { authClient } from "@/lib/auth-client";
-import { ENV } from "../../env";
 
 export default function AIPage() {
   const { data: session } = authClient.useSession();
@@ -54,7 +53,7 @@ export default function AIPage() {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: new DefaultChatTransport({
-      api: `${ENV.NEXT_PUBLIC_SERVER_URL}/ai`,
+      api: "/api/ai",
     }),
   });
   const isSending = status === "submitted" || status === "streaming";
