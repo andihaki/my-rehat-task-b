@@ -53,7 +53,7 @@ export default function AIPage() {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: new DefaultChatTransport({
-      api: "/api/ai",
+      api: "/ai",
     }),
   });
   const isSending = status === "submitted" || status === "streaming";
