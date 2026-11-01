@@ -34,7 +34,7 @@ export default function RootLayout({
           <div className="grid h-svh grid-rows-[auto_1fr]">
             <Header />
             <div className="min-h-0 overflow-y-auto">{children}</div>
-            <pre className="opacity-5">@@debug V0.0.1</pre>
+            <pre className="opacity-5">@@debug v0.0.2</pre>
           </div>
         </Providers>
       </body>
