@@ -6,7 +6,7 @@ import { orpc } from "@/utils/orpc";
 import HomestayList from "./HomestayList";
 
 export default function ListingsPage() {
-	const { data, isLoading } = useQuery(orpc.listings.getAll.queryOptions());
+	const { data, isLoading } = useQuery(orpc.homestay.list.queryOptions());
 	const listings = data ?? [];
 
 	return (

@@ -38,7 +38,7 @@ export default function ListingForm() {
     };
 
     try {
-      await orpcClient.listings.create(data);
+      await orpcClient.homestay.create(data);
       toast.success("Listing created successfully!");
       setType("");
       router.push("/listings");

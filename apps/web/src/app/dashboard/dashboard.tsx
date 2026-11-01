@@ -7,7 +7,7 @@ import { orpc } from "@/utils/orpc";
 
 export default function Dashboard() {
   const privateData = useQuery(orpc.privateData.queryOptions());
-  const myListings = useQuery(orpc.listings.getMine.queryOptions());
+  const myListings = useQuery(orpc.homestay.getMine.queryOptions());
 
   return (
     <>

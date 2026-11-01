@@ -7,7 +7,7 @@ import HomestayList from "./listings/HomestayList";
 
 export default function Home() {
   const healthCheck = useQuery(orpc.healthCheck.queryOptions());
-  const latestListings = useQuery(orpc.listings.getLatest.queryOptions());
+  const latestListings = useQuery(orpc.homestay.getLatest.queryOptions());
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-2">
