@@ -104,7 +104,7 @@ new Elysia()
   .get(
     "/ping",
     () =>
-      `@@debug v0.0.5 - pong - listings=${Object.hasOwn(appRouter, "listings")}`,
+      `@@debug v0.0.6 - pong - listings=${Object.hasOwn(appRouter, "listings")}`,
   )
   .get("/", () => "OK")
   .listen(3000, () => {

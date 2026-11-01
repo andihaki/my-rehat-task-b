@@ -24,34 +24,19 @@ export function createQueryClient() {
 
 export const queryClient = createQueryClient();
 
-function getServerUrl() {
-  const url =
-    process.env.SERVER_URL?.trim() ||
-    process.env.NEXT_PUBLIC_SERVER_URL?.trim();
-
-  if (!url) {
-    return null;
+function getServerUrl(url: string) {
+  const processEnv = typeof process === "undefined" ? undefined : process.env;
+  if (typeof window === "undefined" && processEnv?.SERVER_URL) {
+    return processEnv.SERVER_URL.endsWith("/")
+      ? processEnv.SERVER_URL.slice(0, -1)
+      : processEnv.SERVER_URL;
   }
 
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
 
-function getRpcUrl() {
-  if (typeof window !== "undefined") {
-    const publicServerUrl = process.env.NEXT_PUBLIC_SERVER_URL?.trim();
-    const baseUrl = publicServerUrl
-      ? publicServerUrl.replace(/\/$/, "")
-      : "http://localhost:3000";
-
-    return `${baseUrl}/rpc`;
-  }
-
-  const serverUrl = getServerUrl() ?? "http://localhost:3000";
-  return `${serverUrl}/rpc`;
-}
-
 export const link = new RPCLink({
-  url: getRpcUrl,
+  url: `${getServerUrl(process.env.NEXT_PUBLIC_SERVER_URL!)}/rpc`,
   fetch(url, options) {
     return fetch(url, {
       ...options,
