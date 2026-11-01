@@ -19,9 +19,20 @@ const listingSchema = z.object({
 		.transform((val) => normalizeMyWhatsapp(val)!),
 });
 
+function dbErrorCauseMessage(error: unknown): string {
+	const cause = (error as { cause?: unknown })?.cause;
+	return cause instanceof Error ? cause.message : String(error);
+}
+
 export const homestayRouter = {
 	list: publicProcedure.handler(async ({ context }) => {
-		return context.db.select().from(listing).orderBy(desc(listing.createdAt));
+		try {
+			return await context.db.select().from(listing).orderBy(desc(listing.createdAt));
+		} catch (error) {
+			throw new ORPCError("INTERNAL_SERVER_ERROR", {
+				message: dbErrorCauseMessage(error),
+			});
+		}
 	}),
 	getMine: protectedProcedure.handler(async ({ context }) => {
 		return context.db
