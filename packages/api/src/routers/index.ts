@@ -6,6 +6,7 @@ import { listing } from "@myrehat-task-b/db/schema";
 import { normalizeMyWhatsapp, LISTING_TYPE_VALUES } from "@myrehat-task-b/db";
 
 import { protectedProcedure, publicProcedure } from "../index";
+import { desc } from "drizzle-orm";
 
 const listingSchema = z.object({
   title: z.string().trim().min(3).max(120),
@@ -32,10 +33,11 @@ export const appRouter = {
   }),
   listings: {
     getAll: publicProcedure.handler(async ({ context }) => {
-      const listings = await context.db.query.listing.findMany({
-        orderBy: (listing, { desc }) => [desc(listing.createdAt)],
-      });
-      return listings;
+      return context.db.select().from(listing).orderBy(desc(listing.createdAt));
+      // const listings = await context.db.query.listing.findMany({
+      //   orderBy: (listing, { desc }) => [desc(listing.createdAt)],
+      // });
+      // return listings;
     }),
     getMine: protectedProcedure.handler(async ({ context }) => {
       return context.db.query.listing.findMany({
@@ -53,10 +55,13 @@ export const appRouter = {
       .input(listingSchema)
       .handler(async ({ context, input }) => {
         try {
-          const newListing = await context.db.insert(listing).values({
-            ...input,
-            userId: context.session.user.id,
-          }).returning();
+          const newListing = await context.db
+            .insert(listing)
+            .values({
+              ...input,
+              userId: context.session.user.id,
+            })
+            .returning();
           return newListing[0];
         } catch (error) {
           throw new ORPCError("INTERNAL_SERVER_ERROR", {

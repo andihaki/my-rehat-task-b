@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import HomestayList from "@/app/listings/HomestayList";
-import { orpc } from "@/utils/orpc";
+import { orpc } from "@/utils/orpc0";
 
 export default function Dashboard() {
   const privateData = useQuery(orpc.privateData.queryOptions());
