@@ -3,7 +3,8 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc -b ../../packages/api && tsdown",
+    "clean": "rm -rf dist ../../packages/api/dist ../../packages/api/tsconfig.tsbuildinfo ../../packages/auth/dist ../../packages/auth/tsconfig.tsbuildinfo",
+    "build": "pnpm run clean && tsc -b ../../packages/api --force && tsdown",
     "check-types": "tsc -b ../../packages/api && tsc --noEmit",
     "compile": "bun build --compile --no-compile-autoload-dotenv --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "bun run --hot src/index.ts",
