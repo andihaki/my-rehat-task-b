@@ -35,6 +35,20 @@ export async function proxyToBackend(request: Request, pathname: string) {
 	headers.delete("connection");
 	headers.delete("content-length");
 
+	if (!headers.has("x-forwarded-host")) {
+		const host = request.headers.get("host");
+		if (host) {
+			headers.set("x-forwarded-host", host);
+		}
+	}
+
+	if (!headers.has("x-forwarded-proto")) {
+		headers.set(
+			"x-forwarded-proto",
+			new URL(request.url).protocol.slice(0, -1),
+		);
+	}
+
 	const hasBody = request.method !== "GET" && request.method !== "HEAD";
 
 	try {
