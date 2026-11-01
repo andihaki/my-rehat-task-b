@@ -101,11 +101,7 @@ new Elysia()
     });
   })
   .use(wahaWebhook)
-  .get(
-    "/ping",
-    () =>
-      `@@debug v0.0.4 - pong - listings=${Object.hasOwn(appRouter, "listings")}`,
-  )
+  .get("/ping", () => `@@debug v0.0.3 - pong - listings=${Object.hasOwn(appRouter, "listings")}`)
   .get("/", () => "OK")
   .listen(3000, () => {
     console.log("Server is running on http://localhost:3000");
