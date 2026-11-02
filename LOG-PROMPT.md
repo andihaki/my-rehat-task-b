@@ -44,3 +44,10 @@ Awalnya sempat asume kalo polish bakal bisa di panggil dari `/server/` dan pakai
 - [x] pakai existing Card component di halaman listing
 
 [Prompt session log](./pi-session-2026-10-26T09-21-57-303Z_01a17784-3c37-73ef-bcdc-b14a59637071.html)
+
+# Unit Test
+
+- [x] waha
+- [x] homestay
+
+[Prompt session log](./pi-session-2026-11-02T03-56-46-651Z_01a19a67-0aba-75fb-acfe-9cf8860456bc.html)

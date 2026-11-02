@@ -7,6 +7,8 @@
     "build": "tsc -b ../../packages/api && next build",
     "check-types": "tsc -b ../../packages/api && tsc --noEmit",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "env:generate": "varlock codegen"
   },
   "dependencies": {

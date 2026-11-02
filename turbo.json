@@ -33,6 +33,9 @@
     "db:studio": {
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "outputs": []
     }
   },
   "globalEnv": [
