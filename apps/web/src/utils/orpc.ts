@@ -1,9 +1,9 @@
-import type { AppRouterClient } from "@myrehat-task-b/api/routers/index";
-import { createORPCClient } from "@orpc/client";
-import { RPCLink } from "@orpc/client/fetch";
-import { createTanstackQueryUtils } from "@orpc/tanstack-query";
-import { QueryCache, QueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import type { AppRouterClient } from '@myrehat-task-b/api/routers/index';
+import { createORPCClient } from '@orpc/client';
+import { RPCLink } from '@orpc/client/fetch';
+import { createTanstackQueryUtils } from '@orpc/tanstack-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export function createQueryClient() {
   return new QueryClient({
@@ -11,7 +11,7 @@ export function createQueryClient() {
       onError: (error, query) => {
         toast.error(`Error: ${error.message}`, {
           action: {
-            label: "retry",
+            label: 'retry',
             onClick: () => {
               query.invalidate();
             },
@@ -25,10 +25,17 @@ export function createQueryClient() {
 export const queryClient = createQueryClient();
 
 function getRpcUrl() {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     return `${window.location.origin}/api/rpc`;
   }
-  return `http://server:3000/rpc`;
+
+  // SSR: resolve the backend at runtime, like proxyToBackend does.
+  const serverUrl =
+    process.env.SERVER_URL ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    'http://server:3000';
+
+  return `${serverUrl.replace(/\/$/, '')}/rpc`;
 }
 
 export const link = new RPCLink({
@@ -36,15 +43,15 @@ export const link = new RPCLink({
   fetch(url, options) {
     return fetch(url, {
       ...options,
-      credentials: "include",
+      credentials: 'include',
     });
   },
   headers: async () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       return {};
     }
 
-    const { headers } = await import("next/headers");
+    const { headers } = await import('next/headers');
     return Object.fromEntries(await headers());
   },
 });
