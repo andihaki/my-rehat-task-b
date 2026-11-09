@@ -22,21 +22,23 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // // /api/auth and /rpc is proxied at runtime by src/app/api/**/route.ts
-  // // (proxyToBackend), not by a build-time rewrite.
-  // async rewrites() {
-  //   const serverUrl = process.env.SERVER_URL || 'http://server:3000';
-  //   return [
-  //     {
-  //       source: '/rpc/:path*',
-  //       destination: `${serverUrl}/rpc/:path*`,
-  //     },
-  //     {
-  //       source: '/api/auth/:path*',
-  //       destination: `${serverUrl}/api/auth/:path*`,
-  //     },
-  //   ];
-  // },
+  async rewrites() {
+    // The backend address is stable across every Docker deployment
+    // (local compose and Dokploy both run `server` on the same network),
+    // so it can be frozen at build time. Bare-metal `pnpm dev` sets
+    // SERVER_URL=http://localhost:3000 in apps/web/.env.local instead.
+    const serverUrl = process.env.SERVER_URL || 'http://server:3000';
+    return [
+      {
+        source: '/api/auth/:path*',
+        destination: `${serverUrl}/api/auth/:path*`,
+      },
+      {
+        source: '/api/rpc/:path*',
+        destination: `${serverUrl}/rpc/:path*`,
+      },
+    ];
+  },
 };
 
 export default withVarlock(nextConfig);
