@@ -1,0 +1,20 @@
+# Local-only overlay that mimics what Dokploy's Traefik does: make the
+# containers reachable from the host. Dokploy routes to the service port over
+# the internal docker network, so no published ports are needed there.
+#
+# Dokploy never exposes the `server` container publicly in this setup; the
+# Next app proxies /api/auth and /api/rpc to http://server:3000 internally.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
+#   -> web    http://localhost:4001  (container port 3001)
+#   -> server http://localhost:4000  (container port 3000, optional)
+#
+# 4000/4001 are used because 3000/3001 are usually taken by `pnpm dev`.
+services:
+  web:
+    ports:
+      - "${WEB_PORT:-4001}:3001"
+  server:
+    ports:
+      - "${SERVER_PORT:-4000}:3000"

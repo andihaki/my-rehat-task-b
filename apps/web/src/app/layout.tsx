@@ -1,23 +1,23 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
 
-import "../index.css";
-import Header from "@/components/header";
-import Providers from "@/components/providers";
+import '../index.css';
+import Header from '@/components/header';
+import Providers from '@/components/providers';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "myrehat-task-b",
-  description: "myrehat-task-b",
+  title: 'myrehat-task-b',
+  description: 'myrehat-task-b',
 };
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
           <div className="grid h-svh grid-rows-[auto_1fr]">
             <Header />
             <div className="min-h-0 overflow-y-auto">{children}</div>
-            <pre className="opacity-5">@@debug v0.0.6</pre>
+            <pre className="opacity-5">@@debug v0.0.7</pre>
           </div>
         </Providers>
       </body>

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { Session } from "@myrehat-task-b/auth";
-import type { Database } from "@myrehat-task-b/db";
+import { type Database, LISTING_TYPES } from "@myrehat-task-b/db";
 import { listing } from "@myrehat-task-b/db/schema";
 import { createRouterClient } from "@orpc/server";
 
@@ -272,6 +272,42 @@ describe("homestay.create", () => {
     expect(error).toMatchObject({ code: "BAD_REQUEST" });
     expect(insert).not.toHaveBeenCalled();
   });
+
+  it("names the official categories when rejecting an unknown one", async () => {
+    const { db, insert } = createDbMock();
+
+    const error = (await createClient(db)
+      .homestay.create({ ...validInput, type: "rent_forever" } as never)
+      .catch((caught: unknown) => caught)) as {
+      code?: string;
+      data?: { issues?: { path: unknown[]; message: string }[] };
+    };
+
+    expect(error.code).toBe("BAD_REQUEST");
+    expect(insert).not.toHaveBeenCalled();
+    expect(error.data?.issues).toEqual([
+      expect.objectContaining({
+        path: ["type"],
+        message:
+          "Category must be one of: Buy Property, Buy land to build homestay, Buy Airbnb Profile, Buy Airbnb Business",
+      }),
+    ]);
+  });
+
+  it.each(LISTING_TYPES)(
+    "accepts the official category $value",
+    async ({ value }) => {
+      const { db, insertChain } = createDbMock({
+        insert: async () => [{ id: "listing_1" }],
+      });
+
+      await createClient(db).homestay.create({ ...validInput, type: value });
+
+      expect(insertChain.values).toHaveBeenCalledWith(
+        expect.objectContaining({ type: value }),
+      );
+    },
+  );
 
   it("returns INTERNAL_SERVER_ERROR without leaking database details", async () => {
     const { db } = createDbMock({

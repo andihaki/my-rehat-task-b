@@ -1,19 +1,20 @@
 import { createAuthClient } from "better-auth/react";
 
-function getServerUrl(url: string) {
-  const processEnv = typeof process === "undefined" ? undefined : process.env;
-  if (typeof window === "undefined" && processEnv?.SERVER_URL) {
-    return processEnv.SERVER_URL.endsWith("/")
-      ? processEnv.SERVER_URL.slice(0, -1)
-      : processEnv.SERVER_URL;
+function getAuthBaseUrl() {
+  // Browser: always talk to the Next app itself. The /api/auth route handler
+  // proxies to the backend at runtime, so no hostname is frozen in the bundle.
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}/api/auth`;
   }
 
-  return url.endsWith("/") ? url.slice(0, -1) : url;
+  // SSR: the backend URL is runtime config. SERVER_URL is set by Docker Compose;
+  // NEXT_PUBLIC_SERVER_URL covers local `pnpm dev` (.env.local).
+  const serverUrl =
+    process.env.SERVER_URL ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    "http://server:3000";
+
+  return new URL("/api/auth", serverUrl).toString();
 }
 
-export const authClient = createAuthClient({
-  baseURL: new URL(
-    "/api/auth",
-    getServerUrl(process.env.NEXT_PUBLIC_SERVER_URL!),
-  ).toString(),
-});
+export const authClient = createAuthClient({ baseURL: getAuthBaseUrl() });
