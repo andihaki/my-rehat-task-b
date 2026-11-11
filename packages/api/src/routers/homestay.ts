@@ -1,4 +1,8 @@
-import { LISTING_TYPE_VALUES, normalizeMyWhatsapp } from "@myrehat-task-b/db";
+import {
+	LISTING_TYPE_VALUES,
+	LISTING_TYPES,
+	normalizeMyWhatsapp,
+} from "@myrehat-task-b/db";
 import { listing } from "@myrehat-task-b/db/schema";
 import { ORPCError } from "@orpc/server";
 import { desc, eq } from "drizzle-orm";
@@ -6,11 +10,15 @@ import { z } from "zod";
 
 import { protectedProcedure, publicProcedure } from "../index";
 
+const LISTING_TYPE_LABELS = LISTING_TYPES.map((type) => type.label).join(", ");
+
 const listingSchema = z.object({
 	title: z.string().trim().min(3).max(120),
 	price: z.coerce.number().int().positive(),
 	location: z.string().trim().min(2).max(120),
-	type: z.enum(LISTING_TYPE_VALUES),
+	type: z.enum(LISTING_TYPE_VALUES, {
+		error: `Category must be one of: ${LISTING_TYPE_LABELS}`,
+	}),
 	whatsapp: z
 		.string()
 		.refine((val) => normalizeMyWhatsapp(val) !== null, {

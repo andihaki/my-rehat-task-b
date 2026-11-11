@@ -51,3 +51,7 @@ Awalnya sempat asume kalo polish bakal bisa di panggil dari `/server/` dan pakai
 - [x] homestay
 
 [Prompt session log](./pi-session-2026-11-02T03-56-46-651Z_01a19a67-0aba-75fb-acfe-9cf8860456bc.html)
+
+# Homework
+
+https://ampcode.com/threads/T-01a1c9f2-37ec-7682-b6ca-319da41c55ee
